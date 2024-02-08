@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raffle Ticket Checker</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        box-sizing: border-box;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    #result {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+    .error {
+        color: red;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Check if you won a free movie ticket!</h2>
+    <input type="text" id="raffleNumbers" placeholder="Enter at least ten comma-separated numbers (1-100)">
+    <div id="errorMessage" class="error" style="display: none;">Please enter at least ten numbers.</div>
+    <button onclick="checkRaffle()">Check Raffle</button>
+    <div id="result"></div>
+</div>
+
+<script>
+function checkRaffle() {
+    var raffleInput = document.getElementById("raffleNumbers").value.trim();
+    var raffleNumbers = raffleInput.split(",").map(Number);
+    
+    if (raffleNumbers.length < 10) {
+        document.getElementById("errorMessage").style.display = "block";
+        document.getElementById("result").textContent = "";
+        return;
+    }
+
+    document.getElementById("errorMessage").style.display = "none";
+
+    var winningNumbers = generateWinningNumbers(10); // Change the number as per your requirement
+    
+    var winningCount = 0;
+    for (var i = 0; i < raffleNumbers.length; i++) {
+        if (winningNumbers.includes(raffleNumbers[i])) {
+            winningCount++;
+        }
+    }
+
+    var resultElement = document.getElementById("result");
+    if (winningCount >= 3) { // Change the threshold as per your requirement
+        resultElement.textContent = "Congratulations! You've won a free movie ticket!";
+    } else {
+        resultElement.textContent = "Sorry, you didn't win this time. Better luck next time!";
+    }
+}
+
+function generateWinningNumbers(count) {
+    var winningNumbers = [];
+    while (winningNumbers.length < count) {
+        var randomNum = Math.floor(Math.random() * 100) + 1;
+        if (!winningNumbers.includes(randomNum)) {
+            winningNumbers.push(randomNum);
+        }
+    }
+    return winningNumbers;
+}
+</script>
+</body>
+</html>
